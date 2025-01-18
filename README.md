@@ -8,27 +8,33 @@
 
 详细的使用可参考上方的原仓库链接，此处仅说明本样例新增的变化。
 
-- 更改文件目录结构：
+本样例参考STM32CUBEMX生成CMake项目的形式进行了模块解耦：
 
-    应用逻辑与硬件外设分离，所有的硬件部分初始化可在`mcu/Core/Src/main.c`中进行，所有的应用逻辑都写在`app/src`中。
+    ├── app
+    │   ├── src
+    │   └── inc
+    ├── bsp
+    │   ├── src
+    │   └── inc
+    ├── cmake
+    │   ├── stm32cubemx
+    │   │   └── CMakeLists.txt
+    │   ├── toolchain.cmake
+    │   └── utils.cmake
+    ├── mcu
+    │   ├── core
+    │   ├── drive
+    │   └── ...
+    ├── CMakeLists.txt
+    └── ...
 
-- 增加了编译优化等级选项：
+其中 `./CMakeLists.txt` 作为顶层 **CMake** 构建目标，利用  `cmake/toolchain.cmake` 导入交叉编译工具链，再利用 `cmake/stm32cubemx/CMakeLists.txt` 作为子模块，导入所有 **STM32CubeMX** 所生成的代码，并利用 `cmake/utils.cmake` 中的功能函数自动读取 **STM32CubeMX** 生成的 **Makefile** 文件，最终编译目标结果。
 
-    根据`CMake`提供的不同编译选项自动选择对应的优化等级
-    |BUILD_TYPE     |Opt Level  |
-    |---            |---        |
-    |Debug          |-O0        |
-    |Release        |-Ofast     |
-    |RelWithDebInfo |-Ofast -g  |
-    |MinSizeRel     |-Os        |
+至于为什么 **STM32CubeMX** 已经有了官方提供 **CMake** 构建方式之后仍要使用自行编写的 **CMake** 脚本，是因为官方构建工具对于自行添加三方库并不是十分友好，对于其软件对于代码及文件目录的删改情况并不可控。
 
-- 修改源文件读取方式
+为了更方便的功能解耦，本仓库提供了一种将 **STM32CubeMX** 生成的文件隔离在 `mcu` 文件夹内，所有新增的文件都可自行配置在 `app` 、 `bsp` 以及 `third-party` 中，具利于项目管理和代码编写。
 
-    修改了原本使用`RegExp`来获取`Makefile`中的.c/.h文件目录的方式
-    
-    可在`mcu/Core`中自由添加自己的外设驱动而无需修改`Makefile`
-
-## 测试条件
+## 测试环境
 
 1. 测试平台：Windows 11
 2. 样例MCU：STM32H750VBT6

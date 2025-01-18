@@ -1,9 +1,2 @@
-Hover:
-  ShowAKA: Yes
-Diagnostics:
-  UnusedIncludes: None
-  ClangTidy:
-    Add: modernize*
-    Remove: modernize-use-trailing-return-type
 CompileFlags:
-  Compiler: D:/Env/Arm/bin/arm-none-eabi-gcc.exe
+  Compiler: D:\\Env\\Arm\\bin\\arm-none-eabi-gcc.exe

@@ -1,16 +1,15 @@
 cmake_minimum_required(VERSION 3.28)
-# ------------------------------ CMake Include ------------------------------- #
-include(cmake/utils.cmake)
-include(cmake/toolchain.cmake)
 
-# ----------------------------- Project Config -------------------------------- #
-set(TARGET "target")
-project(${TARGET} LANGUAGES C CXX ASM)
-
-add_executable(${TARGET}.elf)
+# ------------------------------ Project Config -------------------------------- #
+set(CMAKE_PROJECT_NAME "target")
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_CXX_STANDARD 23)
+
+include(cmake/toolchain.cmake)
+
+project(${CMAKE_PROJECT_NAME} LANGUAGES C CXX ASM)
+add_executable(${CMAKE_PROJECT_NAME}.elf)
 
 add_subdirectory(cmake/stm32cubemx)
 
@@ -19,33 +18,33 @@ set(APP_PATH    "app")
 set(BSP_PATH    "bsp")
 
 # ------------------------------- Source Files ------------------------------- #
-file(GLOB_RECURSE sources_file 
+file(GLOB sources_file 
     "${APP_PATH}/src/*.c" 
     "${BSP_PATH}/Src/*.c" 
 )
 
 # ------------------------------ Target Build -------------------------------- #
-target_include_directories(${TARGET}.elf PRIVATE
+target_include_directories(${CMAKE_PROJECT_NAME}.elf PRIVATE
     ${APP_PATH}/inc 
     ${BSP_PATH}/inc 
 )
 
-target_sources(${TARGET}.elf PRIVATE
+target_sources(${CMAKE_PROJECT_NAME}.elf PRIVATE
     ${sources_file}
 )
 
-target_link_libraries(${TARGET}.elf PRIVATE
+target_link_libraries(${CMAKE_PROJECT_NAME}.elf PRIVATE
     stm32cubemx
 )
 
 # ------------------------------- After Build --------------------------------- #
-set(hex_file ${TARGET}.hex)
-set(bin_file ${TARGET}.bin)
-set(asm_file ${TARGET}.s)
+set(hex_file ${CMAKE_PROJECT_NAME}.hex)
+set(bin_file ${CMAKE_PROJECT_NAME}.bin)
+set(asm_file ${CMAKE_PROJECT_NAME}.s)
 
-add_custom_command(TARGET ${TARGET}.elf POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${TARGET}.elf> ${hex_file}
-    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${TARGET}.elf> ${bin_file}
-    COMMAND ${CMAKE_OBJDUMP} -d $<TARGET_FILE:${TARGET}.elf> >${asm_file}
-    COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${TARGET}.elf>
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME}.elf POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${CMAKE_PROJECT_NAME}.elf> ${hex_file}
+    COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${CMAKE_PROJECT_NAME}.elf> ${bin_file}
+    COMMAND ${CMAKE_OBJDUMP} -d $<TARGET_FILE:${CMAKE_PROJECT_NAME}.elf> >${asm_file}
+    COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${CMAKE_PROJECT_NAME}.elf>
 )

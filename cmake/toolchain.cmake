@@ -30,14 +30,14 @@ extract_makefile_variable("CPU" cpu)
 extract_makefile_variable("FPU" fpu)
 extract_makefile_variable("FLOAT-ABI" float_abi)
 add_compile_options(${cpu} -mthumb ${fpu} ${float_abi})
-add_compile_options(-Wall -fdata-sections -ffunction-sections)
+add_compile_options(-Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections)
 add_compile_options($<$<COMPILE_LANGUAGE:ASM>:-x$<SEMICOLON>assembler-with-cpp>) # Enable assembler files preprocessing
 
 # ---------------------------------- LD Flags ------------------------------- #
 add_link_options(${cpu} -mthumb ${fpu} ${float_abi})
 add_link_options(-specs=nano.specs)
 add_link_options(-specs=nosys.specs)
-add_link_options(-Wl,-Map=${CMAKE_BINARY_DIR}/target.map,--cref)
+add_link_options(-Wl,-Map=${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}.map,--cref)
 add_link_options(-Wl,--gc-sections)
 add_link_options(-Wl,--wrap=malloc)
 add_link_options(-Wl,--wrap=free)

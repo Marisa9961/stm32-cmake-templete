@@ -7,4 +7,9 @@ extern void Test() {
     HAL_Delay(1000);
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
     HAL_Delay(1000);
+
+    // C23 test
+    auto a = 1;
+    auto b = 1.1;
+    auto p = nullptr;
 }

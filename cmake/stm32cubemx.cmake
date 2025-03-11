@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 
 # ------------------------------ Makefile parser ----------------------------- #
-include(../utils.cmake)
+include(cmake/utils.cmake)
 
 set(PATH_PREFIX "${CMAKE_SOURCE_DIR}/mcu/")
 

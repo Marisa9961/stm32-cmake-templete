@@ -11,7 +11,6 @@ file(READ "${PATH_PREFIX}Makefile" STM32CUBEMX_MAKEFILE)
 string(REGEX REPLACE "\\\\\\\n" "" STM32CUBEMX_MAKEFILE ${STM32CUBEMX_MAKEFILE})
 
 # -------------------------------- STM32CUBEMX ------------------------------- #
-project(stm32cubemx LANGUAGES C ASM)
 add_library(stm32cubemx INTERFACE)
 
 # --------------------------------- STM32 Define ------------------------------ #

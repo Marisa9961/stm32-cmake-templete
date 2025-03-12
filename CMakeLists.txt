@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.28)
 # ------------------------------ Project Config -------------------------------- #
 set(CMAKE_PROJECT_NAME "target")
 
-set(CMAKE_C_STANDARD 23)
-set(CMAKE_CXX_STANDARD 23)
-
 include(cmake/toolchain.cmake)
 include(cmake/stm32cubemx.cmake)
 
@@ -19,7 +16,7 @@ set(BSP_PATH    "bsp")
 # ------------------------------- Source Files ------------------------------- #
 file(GLOB sources_file 
     "${APP_PATH}/src/*.c" 
-    "${BSP_PATH}/Src/*.c" 
+    "${BSP_PATH}/src/*.c"
 )
 
 # ------------------------------ Target Build -------------------------------- #
